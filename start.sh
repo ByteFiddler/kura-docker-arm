@@ -26,7 +26,7 @@ fi
 
 if [ -n $MEMORY ]; then
 	echo "Setting memory to $MEMORY"
-	sed -E "s#( -Xm[sx])512m#\1${MEMORY}#g" $KURA_PATH/bin/start_kura.sh
+	sed -Ei "s#( -Xm[sx])512m#\1${MEMORY}#g" $KURA_PATH/bin/start_kura.sh
 fi
 
 nohup $KURA_PATH/bin/start_kura.sh $KURA_LOG >> $NOHUP_OUT &

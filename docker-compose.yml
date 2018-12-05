@@ -1,6 +1,7 @@
 version: "3.7"
 services:
   kura:
+    command: /start.sh 128m
     image: bytefiddler/kura-docker-arm:latest
     ports:
       - "80:80"
