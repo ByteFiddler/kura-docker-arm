@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  kura:
+    image: bytefiddler/kura-docker-arm:latest
+    ports:
+      - "80:80"
+    volumes:
+      - "/mnt/kura:/mnt/kura:rw"

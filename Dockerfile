@@ -8,12 +8,16 @@ RUN apt-get update && \
 							gdebi-core \
 							openjdk-8-jre-headless \
 							procps \
-							usbutils && \
+							usbutils \
+							wget && \
 	wget -q http://download.eclipse.org/kura/releases/${KURA_VERSION}/kura_${KURA_VERSION}_raspberry-pi-2-3-nn_installer.deb && \
 	yes | gdebi kura_${KURA_VERSION}_raspberry-pi-2-3-nn_installer.deb && \
 	rm kura_${KURA_VERSION}_raspberry-pi-2-3-nn_installer.deb && \
-	apt-get remove gdebi && \
+	apt-get remove	gdebi \
+					wget && \
 	apt-get clean
+
+EXPOSE 80
 
 COPY start.sh /
 
