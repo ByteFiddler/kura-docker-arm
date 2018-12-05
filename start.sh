@@ -2,6 +2,9 @@
 
 set -e
 
+# optional memory param, default is 512m
+MEMORY=$1
+
 KURA_PATH=/opt/eclipse/kura
 KURA_LOG=/var/log/kura.log
 NOHUP_OUT=/var/log/nohup.out
@@ -19,6 +22,11 @@ if [ -d $GLUSTER_MOUNT ]; then
 		ln -s $GLUSTER_MOUNT/$dir $KURA_PATH/$dir
 	done
 	echo "Set up of gluster on $GLUSTER_MOUNT done"
+fi
+
+if [ -n $MEMORY ]; then
+	echo "Setting memory to $MEMORY"
+	sed -E "s#( -Xm[sx])512m#\1${MEMORY}#g" $KURA_PATH/bin/start_kura.sh
 fi
 
 nohup $KURA_PATH/bin/start_kura.sh $KURA_LOG >> $NOHUP_OUT &
