@@ -2,6 +2,9 @@
 
 set -e
 
+# optional memory param, default is 512m
+MEMORY=$1
+
 KURA_PATH=/opt/eclipse/kura
 KURA_LOG=/var/log/kura.log
 NOHUP_OUT=/var/log/nohup.out
@@ -21,9 +24,10 @@ if [ -d $GLUSTER_MOUNT ]; then
 	echo "Set up of gluster on $GLUSTER_MOUNT done"
 fi
 
-echo "Enable the detection of container-limited amount of RAM ..."
-LIMIT_RAM=' -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap'
-sed -Ei "s# -Xms512m -Xmx512m#\0${LIMIT_RAM}#g" $KURA_PATH/bin/start_kura.sh
+if [ -n $MEMORY ]; then
+	echo "Setting memory to $MEMORY"
+	sed -Ei "s#( -Xm[sx])512m#\1${MEMORY}#g" $KURA_PATH/bin/start_kura.sh
+fi
 
 nohup $KURA_PATH/bin/start_kura.sh $KURA_LOG >> $NOHUP_OUT &
 KURA_PID=$!
