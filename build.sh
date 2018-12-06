@@ -10,6 +10,8 @@ IMAGE=$(basename $DIR)
 TAG="$(uname -m)"
 FULL_TAG=${REPO}/${IMAGE}:${TAG}
 
+# docker manifest push --purge bytefiddler/kura-docker-arm:latest | exit 0
+
 mkdir -p ${DIR}/log
 echo "Build image, write log to : ${DIR}/log/docker-build.${DATETIME}.log"
 docker build --tag $FULL_TAG $DIR 2>&1 | tee ${DIR}/log/docker-build.${DATETIME}.log
@@ -18,7 +20,7 @@ echo "Push image ..."
 docker push $FULL_TAG
 
 echo "Purge manifest (push --purge) ..."
-docker manifest push --purge $FULL_TAG | exit 0
+# docker manifest push --purge $FULL_TAG | exit 0
 docker manifest push --purge ${REPO}/${IMAGE}:latest | exit 0
 
 echo "Create manifest ..."
