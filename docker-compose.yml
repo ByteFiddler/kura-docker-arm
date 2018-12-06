@@ -2,8 +2,11 @@ version: "3.7"
 services:
   kura:
     command: /start.sh 128m
-    image: bytefiddler/kura-docker-arm:latest
+    image: bytefiddler/kura-docker-arm:armv7l
     ports:
       - "80:80"
     volumes:
       - "/mnt/kura:/mnt/kura:rw"
+    deploy:
+      placement:
+        constraints: [node.role != manager]

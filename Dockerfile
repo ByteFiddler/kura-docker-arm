@@ -1,4 +1,6 @@
-FROM resin/rpi-raspbian:stretch
+# FROM resin/rpi-raspbian:stretch
+# FROM arm32v7/openjdk:8-jre
+FROM openjdk:8-jre-stretch
 
 ARG KURA_VERSION=4.0.0
 
@@ -8,14 +10,13 @@ RUN apt-get update && \
 							gdebi-core \
 							openjdk-8-jre-headless \
 							procps \
-							usbutils \
-							wget && \
+							usbutils && \
 	wget -q http://download.eclipse.org/kura/releases/${KURA_VERSION}/kura_${KURA_VERSION}_raspberry-pi-2-3-nn_installer.deb && \
 	yes | gdebi kura_${KURA_VERSION}_raspberry-pi-2-3-nn_installer.deb && \
 	rm kura_${KURA_VERSION}_raspberry-pi-2-3-nn_installer.deb && \
-	apt-get remove	gdebi \
-					wget && \
-	apt-get clean
+	apt-get --yes remove	gdebi-core && \
+	apt-get --yes autoremove && \
+	apt-get --yes clean
 
 EXPOSE 80
 
